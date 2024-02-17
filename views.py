@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template, Blueprint, request, jsonify
 
 views = Blueprint(__name__,"views")
 
@@ -31,17 +31,30 @@ def checkout():
 
 
 @views.route("/account")
-def account():
-    return render_template('account.html')
+def account(username):
+    #allows the retrieval of the query parameters
+    args = request.args
+    name = args.get('name')
+    return render_template('account.html', name=name)
 
 @views.route("/checkout")
 def checkout():
     return render_template('checkout.html')
 
-#commenteed these out for now to come back to 
-#@views.route("/category/<category_name>")
-#@views.route("/Clothing and Jewelery/<int:product_id>")
-#@views.route("/search?q=<query>")
+
+@views.route("/category")
+def categoryName(categoryName):
+    args = request.args
+    categoryName = args.get('categoryName')
+    return render_template('category.html', category=categoryName)
+
+@views.route("/Product Page/<int:product_id>")
+def product(product_id):
+    return render_template('productPage.html', product = product_id )
+
+@views.route("/search?q=<query>")
+def search(query):
+    return render_template('search.html',search = query)
 
 
 
